@@ -162,46 +162,57 @@ with col1:
                 'time': elapsed * 1000
             })
 
-            if results:
-                st.success(f"✅ Found {len(results)} file(s) in {elapsed*1000:.2f} ms")
+            # Store results in session state for display outside form
+            st.session_state.last_search_results = results
+            st.session_state.last_search_time = elapsed
+            st.session_state.last_search_keyword = search_keyword
 
-                # Display results
-                st.markdown("#### 📁 Results:")
+    # Display search results outside the form
+    if 'last_search_results' in st.session_state and st.session_state.last_search_results is not None:
+        results = st.session_state.last_search_results
+        elapsed = st.session_state.last_search_time
+        search_keyword = st.session_state.last_search_keyword
 
-                for i, file_info in enumerate(results, 1):
-                    with st.container():
-                        col_a, col_b = st.columns([3, 1])
+        if results:
+            st.success(f"✅ Found {len(results)} file(s) in {elapsed*1000:.2f} ms")
 
-                        with col_a:
-                            st.markdown(f"**{i}. {file_info['original_name']}**")
-                            st.caption(f"File ID: `{file_info['file_id'][:16]}...`")
+            # Display results
+            st.markdown("#### 📁 Results:")
 
-                        with col_b:
-                            # Download button
-                            if st.button(f"⬇️ Download", key=f"download_{file_info['file_id']}"):
-                                # Create downloads directory
-                                download_dir = "downloads"
-                                Path(download_dir).mkdir(exist_ok=True)
+            for i, file_info in enumerate(results, 1):
+                with st.container():
+                    col_a, col_b = st.columns([3, 1])
 
-                                output_path = os.path.join(
-                                    download_dir,
-                                    file_info['original_name']
-                                )
+                    with col_a:
+                        st.markdown(f"**{i}. {file_info['original_name']}**")
+                        st.caption(f"File ID: `{file_info['file_id'][:16]}...`")
 
-                                success = st.session_state.client.download_file(
-                                    st.session_state.server,
-                                    file_info['file_id'],
-                                    file_info['file_key'],
-                                    output_path
-                                )
+                    with col_b:
+                        # Download button (outside form)
+                        if st.button(f"⬇️ Download", key=f"download_{file_info['file_id']}"):
+                            # Create downloads directory
+                            download_dir = "downloads"
+                            Path(download_dir).mkdir(exist_ok=True)
 
-                                if success:
-                                    st.success(f"✅ Downloaded to `{output_path}`")
-                                else:
-                                    st.error("❌ Download failed")
+                            output_path = os.path.join(
+                                download_dir,
+                                file_info['original_name']
+                            )
 
-            else:
-                st.warning(f"⚠️ No files found for keyword '{search_keyword}'")
+                            success = st.session_state.client.download_file(
+                                st.session_state.server,
+                                file_info['file_id'],
+                                file_info['file_key'],
+                                output_path
+                            )
+
+                            if success:
+                                st.success(f"✅ Downloaded to `{output_path}`")
+                            else:
+                                st.error("❌ Download failed")
+
+        else:
+            st.warning(f"⚠️ No files found for keyword '{search_keyword}'")
 
     # Upload History
     if st.session_state.upload_history:
