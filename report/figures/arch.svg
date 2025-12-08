@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+  <!-- Definitions for markers -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#333"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="400" fill="#ffffff"/>
+
+  <!-- Client Side -->
+  <rect x="50" y="100" width="200" height="200" rx="10" fill="#e3f2fd" stroke="#2196f3" stroke-width="2"/>
+  <text x="150" y="140" font-family="Arial" font-size="20" font-weight="bold" text-anchor="middle" fill="#0d47a1">CLIENT</text>
+  <text x="150" y="170" font-family="Arial" font-size="14" text-anchor="middle" fill="#555">(Trusted)</text>
+  
+  <!-- Client Internal: State -->
+  <rect x="75" y="200" width="150" height="80" rx="5" fill="#ffffff" stroke="#2196f3" stroke-width="1"/>
+  <text x="150" y="230" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="#333">Client State</text>
+  <text x="150" y="255" font-family="Monospace" font-size="12" text-anchor="middle" fill="#555">w -> (Key, Addr)</text>
+
+  <!-- Server Side -->
+  <rect x="550" y="100" width="200" height="200" rx="10" fill="#fbe9e7" stroke="#ff5722" stroke-width="2"/>
+  <text x="650" y="140" font-family="Arial" font-size="20" font-weight="bold" text-anchor="middle" fill="#bf360c">SERVER</text>
+  <text x="650" y="170" font-family="Arial" font-size="14" text-anchor="middle" fill="#555">(Honest-but-Curious)</text>
+
+  <!-- Server Internal: DB -->
+  <path d="M575,210 C575,200 600,200 650,200 C700,200 725,200 725,210 L725,270 C725,280 700,280 650,280 C600,280 575,280 575,270 Z" fill="#ffffff" stroke="#ff5722" stroke-width="1"/>
+  <path d="M575,210 C575,220 600,220 650,220 C700,220 725,220 725,210" fill="none" stroke="#ff5722" stroke-width="1"/>
+  <text x="650" y="250" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="#333">Encrypted Index</text>
+
+  <!-- Arrows -->
+  <!-- Update -->
+  <line x1="260" y1="180" x2="540" y2="180" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="400" y="170" font-family="Arial" font-size="12" text-anchor="middle" fill="#333">Update(Addr, Encrypted Node)</text>
+
+  <!-- Search -->
+  <line x1="260" y1="220" x2="540" y2="220" stroke="#333" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <text x="400" y="210" font-family="Arial" font-size="12" text-anchor="middle" fill="#333">Search(Key, Addr)</text>
+
+  <!-- Results -->
+  <line x1="540" y1="260" x2="260" y2="260" stroke="#333" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrowhead)"/>
+  <text x="400" y="280" font-family="Arial" font-size="12" text-anchor="middle" fill="#333">Return Encrypted Chain</text>
+
+</svg>

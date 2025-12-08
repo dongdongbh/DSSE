@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400">
+  <!-- Title -->
+  <text x="300" y="30" font-family="Arial" font-size="18" font-weight="bold" text-anchor="middle">Search Latency vs Result Set Size</text>
+
+  <!-- Axes -->
+  <line x1="60" y1="350" x2="550" y2="350" stroke="black" stroke-width="2"/> <!-- X Axis -->
+  <line x1="60" y1="350" x2="60" y2="50" stroke="black" stroke-width="2"/>  <!-- Y Axis -->
+
+  <!-- Labels -->
+  <text x="300" y="390" font-family="Arial" font-size="14" text-anchor="middle">Number of Results</text>
+  <text x="20" y="200" font-family="Arial" font-size="14" text-anchor="middle" transform="rotate(-90, 20, 200)">Time (ms)</text>
+
+  <!-- Y Axis Ticks (0 to 4.0) -->
+  <text x="50" y="350" font-family="Arial" font-size="12" text-anchor="end">0.0</text>
+  <text x="50" y="275" font-family="Arial" font-size="12" text-anchor="end">1.0</text>
+  <text x="50" y="200" font-family="Arial" font-size="12" text-anchor="end">2.0</text>
+  <text x="50" y="125" font-family="Arial" font-size="12" text-anchor="end">3.0</text>
+  <text x="50" y="50" font-family="Arial" font-size="12" text-anchor="end">4.0</text>
+
+  <!-- X Axis Ticks -->
+  <text x="60" y="365" font-family="Arial" font-size="12" text-anchor="middle">0</text>
+  <text x="182" y="365" font-family="Arial" font-size="12" text-anchor="middle">250</text>
+  <text x="305" y="365" font-family="Arial" font-size="12" text-anchor="middle">500</text>
+  <text x="427" y="365" font-family="Arial" font-size="12" text-anchor="middle">750</text>
+  <text x="550" y="365" font-family="Arial" font-size="12" text-anchor="middle">1000</text>
+
+  <!-- Data Line -->
+  <!-- 
+    10 -> 0.05ms (Y=346)
+    500 -> 1.68ms (Y=224)
+    1000 -> 3.41ms (Y=94)
+  -->
+  <polyline points="
+    65,346 
+    305,224 
+    550,94" 
+    fill="none" stroke="#ff5722" stroke-width="3"/>
+    
+  <!-- Data Points -->
+  <circle cx="65" cy="346" r="4" fill="#bf360c"/>
+  <circle cx="305" cy="224" r="4" fill="#bf360c"/>
+  <circle cx="550" cy="94" r="4" fill="#bf360c"/>
+
+</svg>

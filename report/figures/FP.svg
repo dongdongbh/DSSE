@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300">
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#555"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="400" y="40" font-family="Arial" font-size="20" font-weight="bold" text-anchor="middle" fill="#333">Chained Encrypted Inverted Index</text>
+
+  <!-- Node 3 (Head) -->
+  <g transform="translate(550, 100)">
+    <rect width="180" height="120" rx="5" fill="#e8f5e9" stroke="#4caf50" stroke-width="2"/>
+    <text x="90" y="30" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle">Update 3 (Latest)</text>
+    <line x1="10" y1="40" x2="170" y2="40" stroke="#4caf50"/>
+    <text x="90" y="65" font-family="Monospace" font-size="12" text-anchor="middle">Key: K3</text>
+    <text x="90" y="85" font-family="Monospace" font-size="12" text-anchor="middle">Addr: A3</text>
+    <text x="90" y="105" font-family="Monospace" font-size="12" text-anchor="middle" fill="#d32f2f">Ptr: (K2, A2)</text>
+  </g>
+
+  <!-- Node 2 -->
+  <g transform="translate(310, 100)">
+    <rect width="180" height="120" rx="5" fill="#e8f5e9" stroke="#4caf50" stroke-width="2"/>
+    <text x="90" y="30" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle">Update 2</text>
+    <line x1="10" y1="40" x2="170" y2="40" stroke="#4caf50"/>
+    <text x="90" y="65" font-family="Monospace" font-size="12" text-anchor="middle">Key: K2</text>
+    <text x="90" y="85" font-family="Monospace" font-size="12" text-anchor="middle">Addr: A2</text>
+    <text x="90" y="105" font-family="Monospace" font-size="12" text-anchor="middle" fill="#d32f2f">Ptr: (K1, A1)</text>
+  </g>
+
+  <!-- Node 1 (Tail) -->
+  <g transform="translate(70, 100)">
+    <rect width="180" height="120" rx="5" fill="#e8f5e9" stroke="#4caf50" stroke-width="2"/>
+    <text x="90" y="30" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle">Update 1</text>
+    <line x1="10" y1="40" x2="170" y2="40" stroke="#4caf50"/>
+    <text x="90" y="65" font-family="Monospace" font-size="12" text-anchor="middle">Key: K1</text>
+    <text x="90" y="85" font-family="Monospace" font-size="12" text-anchor="middle">Addr: A1</text>
+    <text x="90" y="105" font-family="Monospace" font-size="12" text-anchor="middle" fill="#d32f2f">Ptr: NULL</text>
+  </g>
+
+  <!-- Links (Backwards pointers) -->
+  <path d="M 550 160 L 490 160" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrowhead)"/>
+  <path d="M 310 160 L 250 160" stroke="#d32f2f" stroke-width="2" marker-end="url(#arrowhead)"/>
+
+  <!-- Client State -->
+  <rect x="540" y="240" width="200" height="40" rx="5" fill="#fff3e0" stroke="#ff9800" stroke-width="2" stroke-dasharray="4"/>
+  <text x="640" y="265" font-family="Arial" font-size="12" text-anchor="middle" fill="#ef6c00">Client State Holds (K3, A3)</text>
+  <line x1="640" y1="240" x2="640" y2="220" stroke="#ff9800" stroke-width="1" stroke-dasharray="4" marker-end="url(#arrowhead)"/>
+
+</svg>
