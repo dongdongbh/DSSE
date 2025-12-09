@@ -164,7 +164,7 @@ We formally define the three core algorithms of our scheme: \texttt{Setup}, \tex
 \end{algorithm}
 
 \section{Security Analysis}
-The central security goal of our project is \textbf{Forward Privacy}. We analyze why our construction achieves this.
+The central security goal of our project is \textbf{Forward Privacy}. We consider the server to be \textbf{honest-but-curious}: it faithfully executes the protocol and maintains data integrity, but attempts to learn information about the encrypted data and queries from the available execution traces. In this section, we analyze why our construction achieves forward privacy under this threat model.
 
 \subsection{Forward Privacy Guarantee}
 Forward privacy requires that an update operation leaks no information about the keyword being updated, even if that keyword has been searched for in the past.
@@ -188,7 +188,7 @@ In our scheme, as illustrated in Figure \ref{fig:chain}, when the client updates
 Therefore, the view of the server during an update is indistinguishable from a random write operation. The server cannot correlate the new entry with any previous search tokens because the cryptographic link (the pointer to $K_{old}$) is encrypted inside the new ciphertext, which the server cannot decrypt without the new token.
 
 \section{Implementation Details}
-We implemented the system in Python 3.12, focusing on modularity and production-readiness.
+We implemented the system in Python 3.12, adopting a modular architecture that separates the client logic, server storage, and user interface. Our implementation relies on the \texttt{cryptography} library for robust AES-GCM and HMAC primitives, native \texttt{sqlite3} for database management, and \texttt{streamlit} for rendering the interactive dashboard.
 
 \subsection{Cryptographic Engine}
 The \texttt{CryptoHandler} class encapsulates all primitives. We strictly use authenticated encryption (AES-GCM) rather than standard AES-CBC. This is critical because it prevents the server from modifying the encrypted pointers (padding oracle attacks or pointer tampering) without detection.
@@ -269,8 +269,25 @@ Table \ref{tab:search} and Figure \ref{fig:search_graph} demonstrate that search
 \label{tab:search}
 \end{table}
 
+\section{Challenges and Solutions}
+Implementing a theoretical cryptographic scheme into a functional software system presented several unique challenges. We identify three primary hurdles and our strategies for addressing them.
+
+\subsection{Debugging Non-Deterministic Ciphertexts}
+One of the most significant difficulties in implementing cryptography is that encrypted outputs look like random noise. Unlike standard software debugging where errors are often explicit, a flaw in the pointer generation or key derivation simply results in decryption failure (MAC check failed) without helpful error messages.
+\textbf{Solution:} We adopted a rigid \textit{unit-testing strategy}. We built isolated test harnesses for the \texttt{CryptoHandler} class to verify the correctness of the HMAC and AES-GCM primitives independently before integrating them into the main system loop. We also implemented extensive logging of intermediate states (e.g., verifying the derived addresses) in a debug mode to trace the encryption chain step-by-step.
+
+\subsection{Impedance Mismatch: Theoretical Structures vs. Relational Storage}
+Theoretical DSSE papers typically model the server's storage as a simple array or key-value store in RAM. However, mapping the dynamic, chained linked-list structure of the encrypted index to a persistent relational database (SQLite) introduced latency issues. Initially, frequent individual \texttt{INSERT} operations for every node caused significant slowdowns during bulk updates.
+\textbf{Solution:} We optimized the database schema to store encrypted nodes as binary BLOBs and utilized SQLite's transaction management. By batching database commits and optimizing the indexing on the \texttt{address} column, we reduced the I/O overhead, ensuring that the persistence layer did not become a bottleneck for the search algorithm.
+
+\subsection{State Management in Stateless Web Frameworks}
+The Client State ($\Sigma$) is critical for maintaining the entry points to the search chains. However, our visualization tool, Streamlit, is inherently stateless and re-runs the entire script upon every user interaction, which initially caused the client to lose its cryptographic keys after every button click.
+\textbf{Solution:} We leveraged Streamlit's \texttt{session\_state} API to create a persistent container for the client object. This mimics the behavior of a local client application, allowing the cryptographic state to survive across HTTP requests while maintaining the security boundary between the client logic and the server database view.
+
+
 \section{Conclusion}
-We have successfully designed and implemented a Dynamic Searchable Symmetric Encryption scheme that guarantees Forward Privacy. By utilizing a chained encryption structure with fresh random keys, we broke the linkability between updates and searches. Our implementation proves that strong privacy guarantees do not require heavy performance trade-offs; we achieved sub-millisecond operation times while using standard, secure primitives. The addition of persistent storage and an interactive visualization tool transforms this from a theoretical exercise into a practical prototype ready for demonstration.
+We have successfully designed and implemented a Dynamic Searchable Symmetric Encryption scheme that guarantees Forward Privacy. By utilizing a chained encryption structure with fresh random keys, we broke the linkability between updates and searches. Our implementation proves that strong privacy guarantees do not require heavy performance trade-offs; we achieved sub-millisecond operation times while using standard, secure primitives.
+The addition of persistent storage and an interactive visualization tool transforms this from a theoretical exercise into a practical prototype ready for demonstration. In future work, we aim to extend the system to support Backward Privacy, ensuring that deletion operations are also oblivious to the server. Additionally, we plan to explore multi-keyword search capabilities to further enhance the system's utility for complex queries.
 
 % --- REFERENCES ---
 \bibliographystyle{IEEEtran}
