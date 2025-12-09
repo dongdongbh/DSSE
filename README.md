@@ -259,5 +259,5 @@ Educational project for academic purposes.
 ## References
 
 - Cash et al., "Dynamic Searchable Encryption in Very-Large Databases"
-- Bost, "$\Sigma o \phi o \varsigma$: Forward Secure Searchable Encryption"
+- Bost, "Σoφoς: Forward Secure Searchable Encryption"
 - Cryptography course materials on DSSE schemes
