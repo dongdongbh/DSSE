@@ -59,6 +59,18 @@ Searchable Symmetric Encryption (SSE) solves this by allowing a client to encryp
 
 A critical vulnerability in DSSE is information leakage during updates. In naive schemes, if a user uploads a file containing a keyword that was previously searched, the server can correlate the new file with the old search token. This leakage allows the server to build a profile of the user's data over time. This project addresses this vulnerability by implementing \textbf{Forward Privacy}, a security property which guarantees that an update operation does not reveal that the newly inserted element matches any previous search query.
 
+\section{Novelty}
+While Dynamic Searchable Symmetric Encryption (DSSE) has been extensively studied in theory, practical, open-source implementations that address system-level challenges remain scarce. Our project contributes to the existing body of knowledge in the following distinct ways:
+
+\subsection{Transition from Theory to Persistent Systems}
+Most existing DSSE research prototypes operate entirely in volatile memory (RAM) to strictly benchmark algorithmic time complexity. Our work bridges the gap between theoretical construction and real-world deployment by introducing a \textbf{persistent storage layer} based on SQLite. We solved the engineering challenge of mapping dynamic, cryptographically chained data structures to rigid relational database tables, ensuring that the encrypted index survives system restarts—a critical requirement for any practical cloud storage service.
+
+\subsection{Interactive Visualization for Verifiability}
+Cryptography is often treated as a "black box" by end-users. We introduce a novel \textbf{split-view visualization tool} (built with Streamlit) that renders the client's plaintext state alongside the server's encrypted database in real-time. This provides an intuitive, visual proof of the \textbf{Forward Privacy} property: observers can verify with their own eyes that inserting identical keywords results in completely different, unlinkable ciphertexts on the server. This tool lowers the barrier to understanding complex security properties for non-experts.
+
+\subsection{Efficiency via Pure Symmetric Primitives}
+Unlike early Forward Private schemes that relied on heavy Oblivious RAM (ORAM) constructions or Public Key operations, our implementation demonstrates the practicality of achieving strong privacy guarantees using \textbf{only symmetric primitives} (AES-GCM and HMAC). We provide empirical evidence that high security does not require a performance tradeoff, achieving sub-millisecond update latencies suitable for high-throughput applications.
+
 \section{Literature Review}
 The field of SSE has evolved significantly over the last two decades, moving from static constructions to dynamic systems with strong privacy guarantees.
 
